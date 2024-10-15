@@ -10,7 +10,7 @@ import 'dotenv/config';
     MongooseModule.forRoot(process.env.CONNECTION_STRING), //מודל מובנה שאחראי על החיבור למסד הנתונים
     UserModule,
     AuthModule,
-    // NotesModule,
+    NotesModule,
   ],
 })
 export class AppModule {}
