@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { IsString, MinLength } from 'class-validator'; //מחלקה שאחראית על ולידציה לסוגי המידע(שהסוג שהתקבל תואם לסוג שמצופה)
+import { IsNotEmpty, IsString, MinLength } from 'class-validator'; //מחלקה שאחראית על ולידציה לסוגי המידע(שהסוג שהתקבל תואם לסוג שמצופה)
 export class CreateNoteDto {
   @ApiProperty()
+  @IsNotEmpty()
   @IsString({ message: 'the title is invalid' })
   title: string;
 
