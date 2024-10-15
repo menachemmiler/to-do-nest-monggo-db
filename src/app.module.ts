@@ -1,11 +1,16 @@
 import { Module } from '@nestjs/common';
-import { UserController } from './user/user.controller';
-import { NotesController } from './notes/notes.controller';
-import { AuthController } from './auth/auth.controller';
+import { MongooseModule } from '@nestjs/mongoose';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
+import { NotesModule } from './notes/notes.module';
+import 'dotenv/config';
 
 @Module({
-  imports: [UserController, NotesController, AuthController],
-  controllers: [],
-  providers: [],
+  imports: [
+    MongooseModule.forRoot(process.env.CONNECTION_STRING), //מודל מובנה שאחראי על החיבור למסד הנתונים
+    UserModule,
+    AuthModule,
+    // NotesModule,
+  ],
 })
 export class AppModule {}

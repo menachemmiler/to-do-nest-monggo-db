@@ -1,26 +1,31 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { LoginDTO } from './dto/login.dto';
+import { IUser } from 'src/user/entities/user.interface';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
-  }
+  constructor(@InjectModel('User') private UserModel: Model<IUser>) {}
+  async validatorUser(loginData: LoginDTO) {
+    try {
+      //find user
+      const { password, username } = loginData;
+      const resulte = await this.UserModel.findOne({ username: username });
+      if (!resulte) throw new NotFoundException('user not found!');
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+      //compare
+      const compare = bcrypt.compare(password, resulte.password);
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+      //token or erorr
+      return 'login a user';
+    } catch (err) {
+      throw new BadRequestException();
+    }
   }
 }
